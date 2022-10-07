@@ -233,8 +233,16 @@ process_post_login(struct vsf_session* p_sess)
     else if (tunable_dirlist_enable &&
              str_equal_text(&p_sess->ftp_cmd_str, "LIST"))
     {
-      handle_list(p_sess);
+      handle_list(p_sess); 
+/*      handle_nlst(p_sess); */
+
     }
+    else if (tunable_dirlist_enable &&
+             str_equal_text(&p_sess->ftp_cmd_str, "LIST_ORG"))
+    {
+      handle_list(p_sess); 
+    }
+
     else if (str_equal_text(&p_sess->ftp_cmd_str, "TYPE"))
     {
       handle_type(p_sess);
@@ -900,6 +908,8 @@ handle_dir_common(struct vsf_session* p_sess, int full_details, int stat_cmd)
   }
   if (p_dir != 0 && dir_allow_read)
   {
+    /* PF */
+    str_append_char(&s_option_str, 'a');
     retval = vsf_ftpdataio_transfer_dir(p_sess, use_control, p_dir,
                                         &s_dir_name_str, &s_option_str,
                                         &s_filter_str, full_details);
